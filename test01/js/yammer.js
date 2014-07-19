@@ -16,9 +16,16 @@ function toHTML(image){
 }
 
 $(function(){
+    var tabId   = 0;
+    chrome.tabs.query({"active": true}, function(tab){
+        tabId = tab[0].id;
+    });
+
+    var $body = $(document.body);
+
     var groupID = "4450127";
     var url = "https://www.yammer.com/api/v1/messages/in_group/"+ groupID + ".json";
-    $.get(url, function(data, status, xhr){
+    $.getJSON(url, function(data, status, xhr){
         // console.log(data);
         // window._data = data;
         var images = [];
@@ -34,14 +41,29 @@ $(function(){
         images.forEach(function(image){
             image_tags.push(toHTML(image));
         })
-        $(document.body).append(image_tags);
+        $body.append(image_tags);
     });
 
     $(document).on("click", "a", function(e){
         $this = $(this);
+        $this.replaceWith("<img src='./imgs/loading.gif'>");
+
         $.get($this.attr("href"), function(data, status, xhr){
-            // console.log(status);
-            var data = data;
+            var blob = new Blob([data]);
+            var blobURL = window.URL.createObjectURL(blob);
+
+            var clipboard = $("<input/>");
+            $("body").append(clipboard);
+            clipboard.val(blobURL).select();
+            document.execCommand('copy');
+            clipboard.remove();
+            console.log(blobURL);
+
+            chrome.tabs.sendMessage(tabId,
+                                    {image: "![LGTM](" + blobURL + ")"},
+                                    function(response){
+                                        window.close();
+                                    });
         });
     });
 });
