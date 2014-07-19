@@ -4,7 +4,7 @@
     "manifest_version": 2,
     "description": "Yammer LGTM Getter",
     "browser_action": {
-        "default_icon": "icon.png",
+        "default_icon": "imgs/icon.png",
         "default_title": "Test",
         "default_popup": "popup.html"
     },
@@ -18,7 +18,10 @@
     "content_scripts": [
         {
             "matches": ["https://github.com/*"],
-            "js":      ["./js/jquery-2.1.1.min.js", "./js/yammer.js"],
+            "js":      [
+                "./js/jquery-2.1.1.min.js",
+                "./js/content.js"
+            ],
             "run_at":  "document_end"
         }
     ]
