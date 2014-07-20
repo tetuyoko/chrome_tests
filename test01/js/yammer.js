@@ -52,18 +52,22 @@ $(function(){
             var blob = new Blob([data]);
             var blobURL = window.URL.createObjectURL(blob);
 
-            var clipboard = $("<input/>");
-            $("body").append(clipboard);
-            clipboard.val(blobURL).select();
-            document.execCommand('copy');
-            clipboard.remove();
-            console.log(blobURL);
+            // var clipboard = $("<input/>");
+            // $("body").append(clipboard);
+            // clipboard.val(blobURL).select();
+            // document.execCommand('copy');
+            // clipboard.remove();
+            // console.log(blobURL);
 
-            chrome.tabs.sendMessage(tabId,
-                                    {image: "![LGTM](" + blobURL + ")"},
-                                    function(response){
-                                        window.close();
-                                    });
+            chrome.tabs.sendMessage(
+                tabId,
+                {
+                    image: "![LGTM](" + blobURL + ")",
+                    blob: blob
+                },
+                function(response){
+                    //window.close();
+                });
         });
     });
 });
