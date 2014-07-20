@@ -5,23 +5,38 @@ chrome.runtime.onMessage.addListener(
         var csrf = $("meta[name='csrf-token']").attr("content");
         var url = "https://github.com/upload/policies/assets";
         var formData = new FormData();
-        formData.append("myfile", request.blob);
+        formData.append("file", request.blob);
+        formData.append("name", "image.png");
+        formData.append("size", request.blob.size);
+        formData.append("content_type", "image/png");
         $.ajax({
             url: url,
             type: "post",
-            headers: {
-                "X-CSRF-Token": csrf
-            },
-            data: formData
-            // processData: false,
-            // contentType: false
+            headers: {"X-CSRF-Token": csrf},
+            data: formData,
+            processData: false,
+            contentType: false
         }).done(function(data){
             console.log(data);
-        })
-        //$input = $("#new_comment_field_write_bucket input[type='file']")[0];
-        // $("textarea[name='comment[body]']").focus();
-        // var oldMessage = $("textarea[name='comment[body]']").val();
-        // $("textarea[name='comment[body]']").val(oldMessage + "\n\n" + request.image);
-        // document.execCommand('paste');
+            // $.ajax({
+            //     url: data.upload_url,
+            //     type: "post",
+            //     headers: {"X-CSRF-Token": csrf},
+            //     data: data.form,
+            //     processData: false,
+            //     contentType: false
+            // })
+
+            // $.ajax({
+            //     url: data.asset_upload_url,
+            //     type: "put",
+            //     headers: {"X-CSRF-Token": csrf},
+            //     processData: false,
+            //     contentType: false
+            // });
+            var lgtm = "![LGTM](" + data.asset.href + ")";
+            var oldMessage = $("textarea[name='comment[body]']").val();
+            $("textarea[name='comment[body]']").val(oldMessage + "\n\n" + lgtm);
+        });
     }
 );

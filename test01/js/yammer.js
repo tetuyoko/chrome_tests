@@ -15,15 +15,7 @@ function toHTML(image){
         "<br>";
 }
 
-$(function(){
-    var tabId   = 0;
-    chrome.tabs.query({"active": true}, function(tab){
-        tabId = tab[0].id;
-    });
-
-    var $body = $(document.body);
-
-    var groupID = "4450127";
+function loadGroupImages($body, groupID){
     var url = "https://www.yammer.com/api/v1/messages/in_group/"+ groupID + ".json";
     $.getJSON(url, function(data, status, xhr){
         // console.log(data);
@@ -43,7 +35,17 @@ $(function(){
         })
         $body.append(image_tags);
     });
+}
 
+$(function(){
+    var $body = $(document.body);
+    var groupID = "4450127";
+    loadGroupImages($body, groupID);
+
+    var tabId   = 0;
+    chrome.tabs.query({"active": true}, function(tab){
+        tabId = tab[0].id;
+    });
     $(document).on("click", "a", function(e){
         $this = $(this);
         $this.replaceWith("<img src='./imgs/loading.gif'>");
@@ -57,7 +59,7 @@ $(function(){
             // clipboard.val(blobURL).select();
             // document.execCommand('copy');
             // clipboard.remove();
-            // console.log(blobURL);
+            console.log(blobURL);
 
             chrome.tabs.sendMessage(
                 tabId,
