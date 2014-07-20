@@ -38,18 +38,17 @@ $(function(){
     var groupID = "4450127";
     loadAndAppendGroupImages($body, groupID);
 
-    // 画像がクリックされたとき、ダウンロード => github にアップロード
+    // 画像がクリックされたとき、ダウンロードURLを、コンテンツスクリプトに委譲
     $(document).on("click", "a", function(e){
         $this = $(this);
         $this.replaceWith("<img src='./imgs/loading.gif'>");
 
         var download_url = $this.attr("href");
         chrome.tabs.getSelected(null, function(tab) {
-            chrome.tabs.sendMessage(
+            chrome.tabs.sendRequest(
                 tab.id,
                 { download_url: download_url },
                 function(response){
-                    console.log(response);
                     window.close();
                 });
         });
