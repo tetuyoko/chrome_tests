@@ -2,10 +2,7 @@ function createImage(attachment){
     return {
         thumbnail_url: attachment.thumbnail_url,
         download_url: attachment.download_url
-    }
-    // download_url;
-    // thumbnail_url
-    // large_preview_url
+    };
 }
 
 function toHTML(image){
@@ -15,16 +12,13 @@ function toHTML(image){
         "<br>";
 }
 
-function loadGroupImages($body, groupID){
+function loadAndAppendGroupImages($body, groupID){
     var url = "https://www.yammer.com/api/v1/messages/in_group/"+ groupID + ".json";
     $.getJSON(url, function(data, status, xhr){
-        // console.log(data);
-        // window._data = data;
         var images = [];
         data.messages.forEach(function(message){
             if(message.attachments){
                 message.attachments.forEach(function(attachment){
-                    // console.log(attachment);
                     images.push(createImage(attachment));
                 });
             }
@@ -32,44 +26,31 @@ function loadGroupImages($body, groupID){
         var image_tags = [];
         images.forEach(function(image){
             image_tags.push(toHTML(image));
-        })
-        $body.append(image_tags);
+        });
+        $body.replaceWith(image_tags);
     });
 }
 
 $(function(){
     var $body = $(document.body);
-    var groupID = "4450127";
-    loadGroupImages($body, groupID);
 
-    var tabId   = 0;
-    chrome.tabs.query({"active": true}, function(tab){
-        tabId = tab[0].id;
-    });
+    // groupID の画像を取り出して、HTMLを生成
+    var groupID = "4450127";
+    loadAndAppendGroupImages($body, groupID);
+
+    // 画像がクリックされたとき、ダウンロード => github にアップロード
     $(document).on("click", "a", function(e){
         $this = $(this);
         $this.replaceWith("<img src='./imgs/loading.gif'>");
 
-        $.get($this.attr("href"), function(data, status, xhr){
-            // var blob = new Blob([data], {type: "image/png", name: "image.png"});
-            // var blobURL = window.URL.createObjectURL(blob);
-
-            // var clipboard = $("<input/>");
-            // $("body").append(clipboard);
-            // clipboard.val(blobURL).select();
-            // document.execCommand('copy');
-            // clipboard.remove();
-            // console.log(blobURL);
-
+        var download_url = $this.attr("href");
+        chrome.tabs.getSelected(null, function(tab) {
             chrome.tabs.sendMessage(
-                tabId,
-                {
-                    // image: "![LGTM](" + blobURL + ")",
-                    // blob: blob
-                    data: data
-                },
+                tab.id,
+                { download_url: download_url },
                 function(response){
-                    //window.close();
+                    console.log(response);
+                    window.close();
                 });
         });
     });
