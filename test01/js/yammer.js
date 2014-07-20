@@ -51,21 +51,22 @@ $(function(){
         $this.replaceWith("<img src='./imgs/loading.gif'>");
 
         $.get($this.attr("href"), function(data, status, xhr){
-            var blob = new Blob([data]);
-            var blobURL = window.URL.createObjectURL(blob);
+            // var blob = new Blob([data], {type: "image/png", name: "image.png"});
+            // var blobURL = window.URL.createObjectURL(blob);
 
             // var clipboard = $("<input/>");
             // $("body").append(clipboard);
             // clipboard.val(blobURL).select();
             // document.execCommand('copy');
             // clipboard.remove();
-            console.log(blobURL);
+            // console.log(blobURL);
 
             chrome.tabs.sendMessage(
                 tabId,
                 {
-                    image: "![LGTM](" + blobURL + ")",
-                    blob: blob
+                    // image: "![LGTM](" + blobURL + ")",
+                    // blob: blob
+                    data: data
                 },
                 function(response){
                     //window.close();
