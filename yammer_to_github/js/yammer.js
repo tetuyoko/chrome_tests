@@ -14,21 +14,25 @@ function toHTML(image){
 
 function loadAndAppendGroupImages($body, groupID){
     var url = "https://www.yammer.com/api/v1/messages/in_group/"+ groupID + ".json";
-    $.getJSON(url, function(data, status, xhr){
-        var images = [];
-        data.messages.forEach(function(message){
-            if(message.attachments){
-                message.attachments.forEach(function(attachment){
-                    images.push(createImage(attachment));
-                });
-            }
+    $.getJSON(url)
+        .done(function(data, status, xhr){
+            var images = [];
+            data.messages.forEach(function(message){
+                if(message.attachments){
+                    message.attachments.forEach(function(attachment){
+                        images.push(createImage(attachment));
+                    });
+                }
+            });
+            var image_tags = [];
+            images.forEach(function(image){
+                image_tags.push(toHTML(image));
+            });
+            $body.replaceWith(image_tags);
+        })
+        .fail(function(xhr, status){
+            $body.replaceWith("<div style='width: 200px'>読み取れません。ログインしていないか、ネットワークが違います</div>");
         });
-        var image_tags = [];
-        images.forEach(function(image){
-            image_tags.push(toHTML(image));
-        });
-        $body.replaceWith(image_tags);
-    });
 }
 
 $(function(){
