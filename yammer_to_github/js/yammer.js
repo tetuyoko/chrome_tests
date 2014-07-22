@@ -13,6 +13,9 @@ function toHTML(image){
 }
 
 function loadAndAppendGroupImages($body, groupID){
+    // ネットワークを移動する
+    $.getJSON("https://www.yammer.com/mugenup.com");
+
     var url = "https://www.yammer.com/api/v1/messages/in_group/"+ groupID + ".json";
     $.getJSON(url)
         .done(function(data, status, xhr){
