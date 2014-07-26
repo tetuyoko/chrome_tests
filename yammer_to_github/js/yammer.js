@@ -1,4 +1,7 @@
 function createImage(attachment){
+    if( ! (attachment.thumbnail_url && attachment.download_url) ){
+        return false;
+    }
     return {
         thumbnail_url: attachment.thumbnail_url,
         download_url: attachment.download_url
@@ -23,7 +26,9 @@ function loadAndAppendGroupImages($body, groupID){
             data.messages.forEach(function(message){
                 if(message.attachments){
                     message.attachments.forEach(function(attachment){
-                        images.push(createImage(attachment));
+                        if(image = createImage(attachment)){
+                            images.push(image);
+                        }
                     });
                 }
             });
