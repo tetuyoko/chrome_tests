@@ -9,11 +9,9 @@
         "default_popup": "popup.html"
     },
     "permissions": [
-        "tabs",
-        "http://*/*",
-        "https://*/*",
-        "clipboardWrite",
-        "clipboardRead"
+        "https://www.yammer.com/",
+        "https://github.com/",
+        "https://s3.amazonaws.com/github-cloud"
     ],
     "content_scripts": [
         {
