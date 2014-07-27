@@ -2,6 +2,28 @@ chrome.extension.onRequest.addListener(
     function(request, sender, sendResponse) {
         var csrf = $("meta[name='csrf-token']").attr("content");
 
+        function writeLGTM(data){
+            var lgtm = "![LGTM](" + data.href + ")";
+            var oldMessage = $("textarea[name='comment[body]']").val();
+            if(oldMessage != ""){
+                lgtm = oldMessage + "\n" + lgtm;
+            }
+            $("textarea[name='comment[body]']").val(lgtm);
+            sendResponse({});
+        }
+
+        function putGithub(data, asset_upload_url){
+            $.ajax({
+                url: asset_upload_url,
+                type: "put",
+                headers: {"X-CSRF-Token": csrf},
+                processData: false,
+                contentType: false
+            }).done(function(data, status, xhr){
+                writeLGTM(data);
+            });
+        }
+
         function postS3(data, blob){
             var formData = new FormData();
             for ( var key in data.form ) {
@@ -18,27 +40,12 @@ chrome.extension.onRequest.addListener(
                 processData: false,
                 contentType: false
             }).done(function(data){
-                $.ajax({
-                    url: asset_upload_url,
-                    type: "put",
-                    headers: {"X-CSRF-Token": csrf},
-                    processData: false,
-                    contentType: false
-                }).done(function(data, status, xhr){
-                    var lgtm = "![LGTM](" + data.href + ")";
-                    var oldMessage = $("textarea[name='comment[body]']").val();
-                    if(oldMessage != ""){
-                        lgtm = oldMessage + "\n" + lgtm;
-                    }
-                    $("textarea[name='comment[body]']").val(lgtm);
-                    sendResponse({});
-                });
+                putGithub(data, asset_upload_url);
             });
         }
 
         function postGithub(blob){
             var formData = new FormData();
-            formData.append("file", blob);
             formData.append("name", blob.filename);
             formData.append("size", blob.size);
             formData.append("content_type", blob.type);
