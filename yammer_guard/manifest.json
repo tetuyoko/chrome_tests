@@ -1,0 +1,19 @@
+{
+  "name": "Yammer Prevent General Post",
+  "description": "Yammer Prevent General Post",
+  "version": "1.0",
+  "manifest_version": 2,
+  "permissions": [
+    "https://www.yammer.com/"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.yammer.com/*"],
+      "js": ["./js/content_script.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "page_action": {
+    "default_icon": "images/icon.png"
+  }
+}
