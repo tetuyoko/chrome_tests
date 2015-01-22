@@ -13,7 +13,10 @@
       "run_at": "document_end"
     }
   ],
-  "page_action": {
-    "default_icon": "images/icon.png"
+  "page_action": {},
+  "icons": {
+    "19": "images/yammer-19.png",
+    "32": "images/yammer-32.png",
+    "48": "images/yammer-48.png"
   }
 }
