@@ -1,8 +1,11 @@
-// console.log("content_script");
-if(location.hash.indexOf("type=general") >= 0){
-  // console.log(("type=general"));
-  var style = document.createElement("style");
-  var css = document.createTextNode(".publisher-placeholder:first-child, .yj-thread-list-item--reply-publisher { display: none; }");
-  style.appendChild(css);
-  document.head.appendChild(style);
-}
+var actualCode = '(' + function() {
+    $(document).ajaxComplete(function() {
+      if(location.hash.indexOf("type=general") >= 0){
+        $(".publisher-placeholder:first-child, .yj-thread-list-item--reply-publisher").css("display", "none")
+      }
+    });
+} + ')();';
+var script = document.createElement('script');
+script.textContent = actualCode;
+(document.head||document.documentElement).appendChild(script);
+script.parentNode.removeChild(script);
