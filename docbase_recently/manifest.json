@@ -6,7 +6,6 @@
   "permissions": [
     "https://mugenup.docbase.io/",
      "tabs",
-     "activeTab",
      "storage"
   ],
   "content_scripts": [

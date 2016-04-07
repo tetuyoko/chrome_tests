@@ -2,6 +2,9 @@ var actionIfEnabled = function(action) {
   return function() {
     chrome.storage.local.get('enabled', function (value) {
       var enabled = value.enabled;
+      if (enabled === void 0) {
+        enabled = true;
+      }
       if(enabled){
         action()
       }

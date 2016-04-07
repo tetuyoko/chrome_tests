@@ -1,4 +1,4 @@
-var clicks = 0;
+var clicks = 1;
 var toggleEnabled = function(){
   clicks += 1;
   return isEnabled();
