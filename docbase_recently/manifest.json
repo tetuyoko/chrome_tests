@@ -1,0 +1,34 @@
+{
+  "name": "Docbase Recent",
+  "description": "Custom default page",
+  "version": "1.0",
+  "manifest_version": 2,
+  "permissions": [
+    "https://mugenup.docbase.io/",
+     "tabs",
+     "activeTab",
+     "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://mugenup.docbase.io/*"],
+      "js": [
+        "./js/zepto.min.js",
+        "./js/content_script.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "icons": {
+    "19": "images/icon-19.png",
+    "32": "images/icon-32.png",
+    "48": "images/icon-48.png"
+  },
+  "page_action": {
+    "default_title": "Docbase Recent"
+  },
+  "background": {
+    "scripts": ["./js/background.js"],
+    "persistent": false
+  }
+}
