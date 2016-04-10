@@ -48,7 +48,7 @@ chrome.webRequest.onBeforeRequest.addListener(
     }
   },
   {
-    urls: ["*://mugenup.docbase.io/api/dashboard_objects"],
+    urls: ["*://mugenup.docbase.io/api/*"],
     types: ["xmlhttprequest"]
   },
   [
@@ -70,7 +70,7 @@ chrome.webRequest.onCompleted.addListener(
     //chrome.runtime.sendMessage({ type: "isGroupsPage" }, function(response) {});
   },
   {
-    urls: ["*://mugenup.docbase.io/groups"],
+    urls: ["*://mugenup.docbase.io/groups/*"],
     types: ["xmlhttprequest"]
   }
 );
