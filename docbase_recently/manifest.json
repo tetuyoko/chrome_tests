@@ -6,7 +6,9 @@
   "permissions": [
     "https://mugenup.docbase.io/",
      "tabs",
-     "storage"
+     "storage",
+     "webRequest",
+     "webRequestBlocking"
   ],
   "content_scripts": [
     {
@@ -27,7 +29,6 @@
     "default_title": "Docbase Recent"
   },
   "background": {
-    "scripts": ["./js/background.js"],
-    "persistent": false
+    "scripts": ["./js/background.js"]
   }
 }
