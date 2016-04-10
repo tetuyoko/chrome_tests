@@ -25,7 +25,7 @@ var subMenuHider = function(){
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   switch (request.type) {
-    case "isGroupsPage":
+    case "hidableSubMenu":
       subMenuHider();
       sendResponse({});
       break;

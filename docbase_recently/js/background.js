@@ -11,7 +11,7 @@ chrome.webRequest.onBeforeRequest.addListener(
     }
   },
   {
-    urls: ["*://mugenup.docbase.io/api/*"],
+    urls: ["*://*.docbase.io/api/*"],
     types: ["xmlhttprequest"]
   },
   [
@@ -29,13 +29,13 @@ chrome.webRequest.onCompleted.addListener(
     //chrome.runtime.sendMessage({ type: "isGroupsPage" }, function(response) {});
     var url = details.url;
     chrome.tabs.getSelected(null, function(tab) {
-      chrome.tabs.sendMessage(tab.id, {type: "isGroupsPage"}, function(response) {});
+      chrome.tabs.sendMessage(tab.id, {type: "hidableSubMenu"}, function(response) {});
     });
   },
   {
     urls: [
-      "*://mugenup.docbase.io/groups/*",
-      "*://mugenup.docbase.io/api/tags"
+      "*://*.docbase.io/groups/*",
+      "*://*.docbase.io/api/tags"
     ],
     types: ["xmlhttprequest"]
   }
