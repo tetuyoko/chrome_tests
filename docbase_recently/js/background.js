@@ -33,7 +33,10 @@ chrome.webRequest.onCompleted.addListener(
     });
   },
   {
-    urls: ["*://mugenup.docbase.io/groups/*"],
+    urls: [
+      "*://mugenup.docbase.io/groups/*",
+      "*://mugenup.docbase.io/api/tags"
+    ],
     types: ["xmlhttprequest"]
   }
 );
